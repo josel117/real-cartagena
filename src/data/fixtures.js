@@ -4,60 +4,31 @@
 //   Cambiar resultado: null  →  { local: X, visitante: Y }
 // ─────────────────────────────────────────────────────────────
 
-const SOFA_TEAM   = 'https://api.sofascore.com/api/v1/team'
-const SOFA_PLAYER = 'https://api.sofascore.com/api/v1/player'
+// En producción usa el proxy de Vercel para evitar bloqueo CORS de Sofascore
+const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+const teamImg  = (id) => isDev
+  ? `https://api.sofascore.com/api/v1/team/${id}/image`
+  : `/api/sofa-image?type=team&id=${id}`
 
 export const equipos = {
-  RC:  { id: 6119,    nombre: 'Real Cartagena',          escudo: `${SOFA_TEAM}/6119/image`    },
-  INT: { id: 39866,   nombre: 'Internacional de Palmira', escudo: `${SOFA_TEAM}/39866/image`  },
-  QUI: { id: 6110,    nombre: 'Deportes Quindío',         escudo: `${SOFA_TEAM}/6110/image`   },
-  UMA: { id: 89376,   nombre: 'Unión Magdalena',          escudo: `${SOFA_TEAM}/89376/image`  },
-  ENV: { id: 6114,    nombre: 'Envigado FC',              escudo: `${SOFA_TEAM}/6114/image`   },
-  YUM: { id: 1166437, nombre: 'Independiente Yumbo',      escudo: `${SOFA_TEAM}/1166437/image`},
-  BOG: { id: 89352,   nombre: 'Bogotá FC',                escudo: `${SOFA_TEAM}/89352/image`  },
-  PAT: { id: 61504,   nombre: 'Patriotas Boyacá',         escudo: `${SOFA_TEAM}/61504/image`  },
-  TIG: { id: 89354,   nombre: 'Tigres FC',                escudo: `${SOFA_TEAM}/89354/image`  },
-  RCU: { id: 484422,  nombre: 'Real Cundinamarca',        escudo: `${SOFA_TEAM}/484422/image` },
-  BAR: { id: 89364,   nombre: 'Barranquilla FC',          escudo: `${SOFA_TEAM}/89364/image`  },
-  ORS: { id: 213490,  nombre: 'Orsomarso SC',             escudo: `${SOFA_TEAM}/213490/image` },
-  RSA: { id: 89358,   nombre: 'Real Santander',           escudo: `${SOFA_TEAM}/89358/image`  },
-  BJC: { id: 89366,   nombre: 'Boca Juniors de Cali',     escudo: `${SOFA_TEAM}/89366/image`  },
-  LEO: { id: 89362,   nombre: 'Leones FC',                escudo: `${SOFA_TEAM}/89362/image`  },
-  ACA: { id: 89372,   nombre: 'Atlético Cali',            escudo: `${SOFA_TEAM}/89372/image`  },
+  RC:  { id: 6119,    nombre: 'Real Cartagena',          escudo: teamImg(6119)    },
+  INT: { id: 39866,   nombre: 'Internacional de Palmira', escudo: teamImg(39866)  },
+  QUI: { id: 6110,    nombre: 'Deportes Quindío',         escudo: teamImg(6110)   },
+  UMA: { id: 89376,   nombre: 'Unión Magdalena',          escudo: teamImg(89376)  },
+  ENV: { id: 6114,    nombre: 'Envigado FC',              escudo: teamImg(6114)   },
+  YUM: { id: 1166437, nombre: 'Independiente Yumbo',      escudo: teamImg(1166437)},
+  BOG: { id: 89352,   nombre: 'Bogotá FC',                escudo: teamImg(89352)  },
+  PAT: { id: 61504,   nombre: 'Patriotas Boyacá',         escudo: teamImg(61504)  },
+  TIG: { id: 89354,   nombre: 'Tigres FC',                escudo: teamImg(89354)  },
+  RCU: { id: 484422,  nombre: 'Real Cundinamarca',        escudo: teamImg(484422) },
+  BAR: { id: 89364,   nombre: 'Barranquilla FC',          escudo: teamImg(89364)  },
+  ORS: { id: 213490,  nombre: 'Orsomarso SC',             escudo: teamImg(213490) },
+  RSA: { id: 89358,   nombre: 'Real Santander',           escudo: teamImg(89358)  },
+  BJC: { id: 89366,   nombre: 'Boca Juniors de Cali',     escudo: teamImg(89366)  },
+  LEO: { id: 89362,   nombre: 'Leones FC',                escudo: teamImg(89362)  },
+  ACA: { id: 89372,   nombre: 'Atlético Cali',            escudo: teamImg(89372)  },
 }
 
-// IDs de jugadores en Sofascore → foto: SOFA_PLAYER/{id}/image
-export const jugadoresIds = {
-  'Fredy Montero':       39981,
-  'Mauro Manotas':       797479,
-  'Jarlan Barrera':      796511,
-  'Ronaldo Lora':        974048,
-  'Reynaldo Fontalvo':   1022273,
-  'Aldo Montes':         1174794,
-  'Guillermo Gómez':     1174006,
-  'Marcel Vergara':      2232975,
-  'Joiner Montero':      1066911,
-  'Cristian Florez':     602184,
-  'Andrés Escobar':      1173418,
-  'Jhojan Nieva':        1175047,
-  'Juan Herrera':        1174974,
-  'Juan Rodríguez':      818908,
-  'Didier Pino':         947335,
-  'Jheison Solarte':     1809647,
-  'Luis Guevara':        1478251,
-  'Jairo Fuentes':       1174888,
-  'Humberto García':     1174857,
-  'Cristian Graciano':   1476923,
-  'Guillermo Tegüe':     906007,
-  'Álvaro Meléndez':     924906,
-  'Farid Tamayo':        2228207,
-  'Jairo Ditta':         1175763,
-}
-
-export function getSofaPlayerImg(nombre) {
-  const id = jugadoresIds[nombre]
-  return id ? `${SOFA_PLAYER}/${id}/image` : null
-}
 
 // ── Partidos Torneo Apertura 2026 ─────────────────────────
 // resultado: null = no jugado | { local: X, visitante: Y } = jugado
