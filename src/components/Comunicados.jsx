@@ -1,68 +1,109 @@
-import { useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
 import Reveal from './Reveal'
 
-const noticias = [
+const tweets = [
   {
     id: 1,
-    tipo: 'Resultado',
-    tipoColor: 'green',
-    titulo: '¡Victoria! Real Cartagena 4-0 Orsomarso',
-    desc: 'Goleada contundente en el Jaime Morón León. Gran actuación del equipo que sigue escalando posiciones en el Torneo Apertura 2026.',
-    tags: ['#LaHeroica', '#VamosCartagena'],
-    rt: 287, likes: '1.4K', comments: 94,
-    tiempo: '6 Mar 2026',
-    emoji: '⚽',
+    fecha: '27 dic. 2025',
+    texto: '🟡 FIXTURE 2️⃣0️⃣2️⃣6️⃣ DEFINIDO ✅\n\n#TorneoBetplay2026 🏆📅 #RealEsCartagena',
+    imagen: '/images/tweets/tweet-fixture.png',
+    rt: 3, likes: 41, replies: 2, views: '8 mil',
   },
   {
     id: 2,
-    tipo: 'Clasificación',
-    tipoColor: 'yellow',
-    titulo: 'Real Cartagena, 3º en la tabla con 18 puntos',
-    desc: '5 victorias, 3 empates, 1 derrota. Los Auriverdes están en zona de clasificación a los cuadrangulares finales.',
-    tags: ['#RealCartagena', '#AperturaB2026'],
-    rt: 145, likes: '892', comments: 67,
-    tiempo: '10 Mar 2026',
-    emoji: '🏆',
+    fecha: '28 feb. 2025',
+    texto: '🟡 Sé Real y destapa la felicidad con @CocaCola 😄',
+    imagen: '/images/tweets/tweet-cocacola.png',
+    rt: 19, likes: 317, replies: 3, views: '11 mil',
   },
   {
     id: 3,
-    tipo: 'Próximo',
-    tipoColor: 'blue',
-    titulo: 'Envigado FC vs Real Cartagena — Lun 16 Mar',
-    desc: 'Partido de visitante ante Envigado en el Polideportivo Sur. 16:05 hrs. ¡La Heroica necesita tu aliento!',
-    tags: ['#VamosHeroicos'],
-    rt: 203, likes: '1.1K', comments: 58,
-    tiempo: '12 Mar 2026',
-    emoji: '📋',
+    fecha: '26 dic. 2024',
+    texto: '🟡 Bienvenido a tu nueva casa, Fredy 😄\n\nEn la ciudad más linda de Colombia serás feliz y harás feliz a la mejor hinchada del Torneo 🤝',
+    imagen: '/images/tweets/tweet-fredy.png',
+    rt: 25, likes: 217, replies: 15, views: '12 mil',
   },
 ]
 
-const tagColors = {
-  green:  { badge: 'bg-green-light text-white', dot: 'bg-green-light' },
-  yellow: { badge: 'bg-yellow text-dark',       dot: 'bg-yellow'      },
-  blue:   { badge: 'bg-blue-500 text-white',    dot: 'bg-blue-400'    },
-}
+function TweetCard({ tweet, dark }) {
+  return (
+    <div className={`border rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5
+                    ${dark ? 'bg-black border-white/10 hover:border-white/20' : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 pt-4 pb-2">
+        <div className="flex items-center gap-2">
+          {/* Avatar */}
+          <img src="/images/logo.png" alt="Real Cartagena"
+               className="w-10 h-10 rounded-full object-contain border-2 border-yellow/30 bg-dark p-0.5" />
+          <div>
+            <div className="flex items-center gap-1">
+              <span className={`font-bold text-[0.9rem] leading-none ${dark ? 'text-white' : 'text-gray-900'}`}>
+                Real Cartagena
+              </span>
+              {/* Verified badge */}
+              <svg className="w-4 h-4 text-blue-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/>
+              </svg>
+            </div>
+            <span className={`text-[0.8rem] ${dark ? 'text-white/40' : 'text-gray-400'}`}>
+              @RealCartagena · {tweet.fecha}
+            </span>
+          </div>
+        </div>
+        {/* X logo */}
+        <svg className={`w-5 h-5 ${dark ? 'text-white' : 'text-gray-900'}`} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </div>
 
-// Carga el script de Twitter una sola vez
-function useTwitterWidget(dark) {
-  useEffect(() => {
-    if (window.twttr && window.twttr.widgets) {
-      window.twttr.widgets.load()
-      return
-    }
-    const script = document.createElement('script')
-    script.src = 'https://platform.twitter.com/widgets.js'
-    script.async = true
-    script.charset = 'utf-8'
-    document.body.appendChild(script)
-    return () => {}
-  }, [dark])
+      {/* Texto */}
+      <div className="px-4 pb-3">
+        {tweet.texto.split('\n').map((line, i) => (
+          <p key={i} className={`text-[0.92rem] leading-relaxed ${dark ? 'text-white/90' : 'text-gray-800'} ${i > 0 && line === '' ? 'mt-1' : ''}`}>
+            {line}
+          </p>
+        ))}
+      </div>
+
+      {/* Imagen */}
+      <div className="mx-4 mb-3 rounded-xl overflow-hidden">
+        <img src={tweet.imagen} alt="" className="w-full object-cover max-h-[180px]" />
+      </div>
+
+      {/* Stats */}
+      <div className={`flex items-center gap-5 px-4 py-2.5 border-t text-[0.82rem]
+                      ${dark ? 'border-white/6 text-white/35' : 'border-gray-100 text-gray-400'}`}>
+        <span className="flex items-center gap-1.5 hover:text-blue-400 cursor-pointer transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          {tweet.replies}
+        </span>
+        <span className="flex items-center gap-1.5 hover:text-green-400 cursor-pointer transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+          {tweet.rt}
+        </span>
+        <span className="flex items-center gap-1.5 hover:text-pink-400 cursor-pointer transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          {tweet.likes}
+        </span>
+        <span className={`ml-auto flex items-center gap-1 text-[0.78rem] ${dark ? 'text-white/20' : 'text-gray-300'}`}>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          {tweet.views}
+        </span>
+      </div>
+    </div>
+  )
 }
 
 export default function Comunicados() {
   const { dark } = useTheme()
-  useTwitterWidget(dark)
 
   return (
     <section id="comunicados"
@@ -87,115 +128,22 @@ export default function Comunicados() {
         </div>
       </Reveal>
 
-      {/* ── Layout: cards izquierda + timeline derecha ── */}
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
-
-        {/* Cards noticias */}
-        <Reveal direction="left" delay="0.1s">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-4">
-            {noticias.map((n) => {
-              const tc = tagColors[n.tipoColor]
-              return (
-                <div key={n.id}
-                  className={`group relative flex border overflow-hidden cursor-pointer
-                             transition-all duration-300 hover:-translate-y-1
-                             ${dark
-                               ? 'bg-surface border-white/6 hover:border-white/15 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]'
-                               : 'bg-white border-gray-100 shadow-sm hover:border-gray-200 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]'
-                             }`}>
-                  {/* Barra lateral coloreada */}
-                  <div className={`w-[3px] flex-shrink-0 ${tc.dot}`} />
-
-                  {/* Emoji */}
-                  <div className={`w-[70px] flex-shrink-0 flex items-center justify-center text-[2.5rem]
-                                  ${dark ? 'bg-black/20' : 'bg-gray-50'}`}>
-                    {n.emoji}
-                  </div>
-
-                  {/* Contenido */}
-                  <div className="flex flex-col flex-1 p-4">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className={`font-barlow font-black text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 ${tc.badge}`}>
-                        {n.tipo}
-                      </span>
-                      <span className={`font-barlow text-[10px] ${dark ? 'text-white/30' : 'text-gray-400'}`}>
-                        {n.tiempo}
-                      </span>
-                    </div>
-                    <h3 className={`font-barlow font-bold text-[0.92rem] leading-snug mb-1
-                                   ${dark ? 'text-white' : 'text-gray-900'}`}>
-                      {n.titulo}
-                    </h3>
-                    <p className={`font-body text-[0.82rem] leading-relaxed
-                                  ${dark ? 'text-white/45' : 'text-gray-500'}`}>
-                      {n.desc}
-                    </p>
-                    <div className="flex items-center gap-3 mt-2">
-                      {n.tags.map(tag => (
-                        <span key={tag} className={`font-barlow font-semibold text-[10px]
-                                                   ${dark ? 'text-yellow/60' : 'text-green/70'}`}>
-                          {tag}
-                        </span>
-                      ))}
-                      <span className={`ml-auto font-barlow text-[11px] flex gap-3
-                                       ${dark ? 'text-white/25' : 'text-gray-300'}`}>
-                        <span>🔁 {n.rt}</span>
-                        <span>❤️ {n.likes}</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </Reveal>
-
-        {/* Twitter Timeline */}
-        <Reveal direction="right" delay="0.2s">
-          <div className={`border overflow-hidden ${dark ? 'border-white/6' : 'border-gray-200'}`}>
-            <div className={`px-4 py-3 border-b flex items-center gap-2
-                            ${dark ? 'border-white/6 bg-black/20' : 'border-gray-100 bg-gray-50'}`}>
-              <span className={`font-bebas text-[1.1rem] tracking-[1px]
-                               ${dark ? 'text-white' : 'text-gray-900'}`}>
-                𝕏 @RealCartagena
-              </span>
-            </div>
-
-            {/* Widget oficial de X — solo funciona en producción */}
-            <div className="overflow-hidden">
-              <a className="twitter-timeline"
-                 data-theme={dark ? 'dark' : 'light'}
-                 data-height="520"
-                 data-chrome="noheader nofooter noborders"
-                 data-tweet-limit="4"
-                 href="https://twitter.com/RealCartagena">
-                {/* Placeholder visible solo en localhost */}
-                <div className={`flex flex-col items-center justify-center gap-3 py-16 px-6 text-center
-                                ${dark ? 'bg-surface' : 'bg-gray-50'}`}>
-                  <span className="text-[3rem]">𝕏</span>
-                  <p className={`font-barlow text-[0.85rem] ${dark ? 'text-white/40' : 'text-gray-400'}`}>
-                    Los tweets aparecerán aquí cuando el sitio esté publicado en producción.
-                  </p>
-                  <a href="https://twitter.com/RealCartagena"
-                     target="_blank" rel="noopener noreferrer"
-                     className={`font-barlow font-bold text-[12px] tracking-[2px] uppercase
-                                no-underline ${dark ? 'text-yellow' : 'text-green'}`}>
-                    Ver en Twitter →
-                  </a>
-                </div>
-              </a>
-            </div>
-
-          </div>
-        </Reveal>
-
+      {/* Tweets */}
+      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
+        {tweets.map((tweet, i) => (
+          <Reveal key={tweet.id} direction="up" delay={`${i * 0.1}s`}>
+            <a href="https://twitter.com/RealCartagena" target="_blank" rel="noopener noreferrer"
+               className="no-underline block">
+              <TweetCard tweet={tweet} dark={dark} />
+            </a>
+          </Reveal>
+        ))}
       </div>
 
       {/* CTA */}
-      <Reveal direction="up" delay="0.25s">
+      <Reveal direction="up" delay="0.3s">
         <div className="text-center mt-10">
-          <a href="https://twitter.com/RealCartagena"
-             target="_blank" rel="noopener noreferrer"
+          <a href="https://twitter.com/RealCartagena" target="_blank" rel="noopener noreferrer"
              className={`inline-flex items-center gap-3 btn-skew px-10 py-3.5
                          font-barlow font-black text-[13px] tracking-[2px] uppercase
                          no-underline transition-all duration-200 hover:-translate-y-1
@@ -203,8 +151,9 @@ export default function Comunicados() {
                            ? 'border-2 border-yellow/40 text-yellow hover:bg-yellow/6 hover:border-yellow'
                            : 'border-2 border-green/60 text-green hover:bg-green/6 hover:border-green'
                          }`}>
-            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px]
-                             ${dark ? 'bg-yellow/20' : 'bg-green/15'}`}>𝕏</span>
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
             Seguir en X / Twitter
           </a>
         </div>
