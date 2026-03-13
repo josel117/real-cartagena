@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── Carrusel infinito ── */
+@keyframes slideLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.carousel-animate {
+  animation: slideLeft 30s linear infinite;
+  display: flex;
+}
+
+.carousel-animate:hover {
+  animation-play-state: paused;
+}
+
+/* ── Clip-path botones estilo paralelo ── */
+.btn-skew {
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+}
+
+.btn-skew-sm {
+  clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
+}
+
+/* ── Hex badge ── */
+.hex {
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+}
+
+/* ── Stripe divider ── */
+.stripe-divider {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #F5C800 0px,   #F5C800 30px,
+    #1B6B35 30px,  #1B6B35 60px,
+    #cccccc 60px,  #cccccc 90px
+  );
+}
+
+.dark .stripe-divider {
+  background: repeating-linear-gradient(
+    90deg,
+    #F5C800 0px,   #F5C800 30px,
+    #1B6B35 30px,  #1B6B35 60px,
+    #111111 60px,  #111111 90px
+  );
+}
+
+/* ── Sponsor grayscale hover ── */
+.sponsor-item {
+  filter: grayscale(1) opacity(0.45);
+  transition: filter 0.35s ease, transform 0.25s ease, border-color 0.35s ease;
+}
+
+.sponsor-item:hover {
+  filter: grayscale(0) opacity(1);
+  transform: scale(1.06);
+}
+
+/* ── Scroll drop indicator ── */
+@keyframes scrollDrop {
+  0%   { transform: translateY(-100%); opacity: 1; }
+  80%  { transform: translateY(200%);  opacity: 0.3; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Transición global de tema ── */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.35s;
+  transition-timing-function: ease;
+}
+
+/* Excepción: no transición en animaciones de transform para no romper carrusel */
+.carousel-animate, .carousel-animate * {
+  transition-property: border-color, color;
+}
