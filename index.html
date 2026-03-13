@@ -2,16 +2,48 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <link rel="apple-touch-icon" href="/images/logo.png" />
+
+    <!-- SEO básico -->
     <title>Real Cartagena FC — La Heroica</title>
-    <meta name="description" content="Sitio oficial del Real Cartagena Fútbol Club. Resultados, plantilla, tienda y más." />
+    <meta name="description" content="Sitio oficial del Real Cartagena Fútbol Club. Resultados, plantilla, tienda y noticias del equipo de La Heroica. Torneo BetPlay Primera B 2026." />
+    <meta name="keywords" content="Real Cartagena, fútbol colombiano, Primera B, La Heroica, Cartagena de Indias, BetPlay" />
+    <meta name="author" content="Real Cartagena FC" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://real-cartagena.vercel.app/" />
+
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://real-cartagena.vercel.app/" />
+    <meta property="og:title" content="Real Cartagena FC — La Heroica" />
+    <meta property="og:description" content="Sitio oficial del Real Cartagena Fútbol Club. Resultados, plantilla, tienda y noticias del equipo de La Heroica." />
+    <meta property="og:image" content="https://real-cartagena.vercel.app/images/logo.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Real Cartagena FC" />
+
+    <!-- Twitter Card (al compartir en X) -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@RealCartagena" />
+    <meta name="twitter:title" content="Real Cartagena FC — La Heroica" />
+    <meta name="twitter:description" content="Sitio oficial del Real Cartagena Fútbol Club. Resultados, plantilla, tienda y noticias." />
+    <meta name="twitter:image" content="https://real-cartagena.vercel.app/images/logo.png" />
+
+    <!-- Color del tema en móvil -->
+    <meta name="theme-color" content="#1B6B35" />
+
+    <!-- Fuentes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Twitter/X Widget — carga antes que React para evitar race condition -->
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </body>
 </html>
